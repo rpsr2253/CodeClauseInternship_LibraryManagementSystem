@@ -1,0 +1,95 @@
+class Book:
+    def __init__(self, book_id, title, author):
+        self.book_id = book_id
+        self.title = title
+        self.author = author
+        self.is_available = True
+
+class Library:
+    def __init__(self):
+        self.books = {}
+
+    def add_book(self, book_id, title, author):
+        if book_id not in self.books:
+            book = Book(book_id, title, author)
+            self.books[book_id] = book
+            print(f"Book '{title}' by {author} added to the library.")
+        else:
+            print("Book with this ID already exists.")
+
+    def remove_book(self, book_id):
+        if book_id in self.books:
+            book = self.books.pop(book_id)
+            print(f"Book '{book.title}' by {book.author} removed from the library.")
+        else:
+            print("Book with this ID does not exist.")
+
+    def display_books(self):
+        if self.books:
+            print("Books available in the library:")
+            for book in self.books.values():
+                status = "Available" if book.is_available else "Not Available"
+                print(f"{book.book_id}: {book.title} by {book.author} - {status}")
+        else:
+            print("No books available in the library.")
+
+    def issue_book(self, book_id):
+        if book_id in self.books:
+            book = self.books[book_id]
+            if book.is_available:
+                book.is_available = False
+                print(f"Book '{book.title}' by {book.author} issued.")
+            else:
+                print("Book is already issued.")
+        else:
+            print("Book with this ID does not exist.")
+
+    def return_book(self, book_id):
+        if book_id in self.books:
+            book = self.books[book_id]
+            if not book.is_available:
+                book.is_available = True
+                print(f"Book '{book.title}' by {book.author} returned.")
+            else:
+                print("Book is already available in the library.")
+        else:
+            print("Book with this ID does not exist.")
+
+def main():
+    library = Library()
+
+    while True:
+        print("\nLibrary Management System")
+        print("1. Add Book")
+        print("2. Remove Book")
+        print("3. Display Books")
+        print("4. Issue Book")
+        print("5. Return Book")
+        print("6. Exit")
+        
+        choice = input("Enter your choice (1-6): ")
+
+        if choice == '1':
+            book_id = input("Enter Book ID: ")
+            title = input("Enter Title: ")
+            author = input("Enter Author: ")
+            library.add_book(book_id, title, author)
+        elif choice == '2':
+            book_id = input("Enter Book ID to remove: ")
+            library.remove_book(book_id)
+        elif choice == '3':
+            library.display_books()
+        elif choice == '4':
+            book_id = input("Enter Book ID to issue: ")
+            library.issue_book(book_id)
+        elif choice == '5':
+            book_id = input("Enter Book ID to return: ")
+            library.return_book(book_id)
+        elif choice == '6':
+            print("Exiting the Library Management System.")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
